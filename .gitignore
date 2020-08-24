@@ -1,0 +1,14 @@
+# Plugins
+.history
+
+# Build and dependencies
+.gradle
+build
+bin
+
+# Miscellaneous
+backup
+.DS_Store
+*.tar*
+*.gz
+*.pem

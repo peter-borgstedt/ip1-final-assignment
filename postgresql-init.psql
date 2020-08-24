@@ -1,0 +1,51 @@
+/*
+ * Script is done to be able to run even if it has been run before by
+ * removing and recreating resources.
+ * Peter Borgstedt (pebo6883@student.su.se)
+ */
+
+DROP TABLE users;
+CREATE TABLE IF NOT EXISTS users (
+  id varchar(10) PRIMARY KEY,
+  email varchar(255) NOT NULL,
+  password varchar(255) NOT NULL,
+  forename varchar(255) NOT NULL,
+  surname varchar(255) NOT NULL,
+  profile_image_url varchar(255),
+  UNIQUE(email)
+);
+
+DROP TABLE messages;
+CREATE TABLE IF NOT EXISTS messages (
+  idx SERIAL NOT NULL,
+  id varchar(10),
+  channel_id varchar(255),
+  user_id varchar(255),
+  created numeric NOT NULL,
+  data bytea NOT NULL,
+  PRIMARY KEY(id, channel_id, user_id)
+);
+CREATE INDEX idx_idx ON messages USING btree (idx);
+
+DROP TABLE channels;
+CREATE TABLE IF NOT EXISTS channels (
+  id varchar(10) PRIMARY KEY,
+  name varchar(255) UNIQUE NOT NULL,
+  description varchar(255),
+  created numeric NOT NULL,
+  creator_id varchar(10) NOT NULL
+);
+
+DROP TABLE subscriptions;
+CREATE TABLE IF NOT EXISTS subscriptions (
+  user_id varchar(10),
+  channel_id varchar(10),
+  PRIMARY KEY(user_id, channel_id)
+);
+CREATE INDEX subscriptions_user_id ON subscriptions (user_id);
+CREATE INDEX subscriptions_channel_id ON subscriptions (channel_id);
+
+SELECT * FROM users;
+SELECT * FROM channels;
+SELECT * FROM messages;
+SELECT * FROM subscriptions;

@@ -1,0 +1,46 @@
+{
+  "files.eol": "\n",
+  "terminal.integrated.fontFamily": "Meslo LG M for Powerline",
+  "terminal.integrated.fontSize": 14,
+  "workbench.colorCustomizations": {
+    "terminal.foreground": "#c7c7c7",
+    "terminal.background": "#162a3b",
+    "terminal.ansiBlack": "#616161",
+    "terminal.ansiRed": "#ff8272",
+    "terminal.ansiGreen": "#b4fa72",
+    "terminal.ansiYellow": "#fefdc2",
+    "terminal.ansiBlue": "#a5d5fe",
+    "terminal.ansiMagenta": "#ff8ffd",
+    "terminal.ansiCyan": "#d0d1fe",
+    "terminal.ansiWhite": "#f1f1f1",
+    "terminal.ansiBrightBlack": "#8e8e8e",
+    "terminal.ansiBrightRed": "#ffc4bd",
+    "terminal.ansiBrightGreen": "#d6fcb9",
+    "terminal.ansiBrightYellow": "#fefdd5",
+    "terminal.ansiBrightBlue": "#c1e3fe",
+    "terminal.ansiBrightMagenta": "#ffb1fe",
+    "terminal.ansiBrightCyan": "#e5e6fe",
+    "terminal.ansiBrightWhite": "#feffff",
+  },
+  "java.codeGeneration.generateComments": true,
+  "java.debug.settings.hotCodeReplace": "auto",
+  "java.autobuild.enabled": true,
+  "java.saveActions.organizeImports": true,
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.completion.enabled": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "java.completion.filteredTypes" : [
+    "java.awt.List",
+    "com.sun.*"
+  ],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true
+  }
+}

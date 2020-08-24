@@ -1,0 +1,41 @@
+
+plugins {
+  id 'java' // Build using Java
+  id 'war' // Build to WAR
+}
+
+war {
+  archiveFileName = 'ipfinalassignment.war'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'javax.enterprise:cdi-api:2.0.SP1'
+  // Used for websocket
+  implementation 'javax.websocket:javax.websocket-api:1.1'
+  // Used for REST api
+  implementation 'org.glassfish.jersey.containers:jersey-container-servlet:2.30.1'
+  implementation 'javax.servlet:javax.servlet-api:4.0.1'
+  // Used for rest validation on JSON data
+  implementation 'org.glassfish.jersey.ext:jersey-bean-validation:2.30.1'
+  // Used for dependency injection support
+  implementation 'org.glassfish.jersey.inject:jersey-hk2:2.30.1'
+  // Used for marshall/demarshal of json to class objects
+  implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:2.30.1'
+  implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+  // Used for marshall/demarshal and validating JSON webtoken
+  implementation 'io.jsonwebtoken:jjwt:0.9.1'
+  // Used for database integration towards PostgreSQL
+  implementation 'org.postgresql:postgresql:42.1.4'
+  // Used for (third-party-service) integration; Simple Storage (S3) using AWS-SDK
+  // Further details: https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-project-gradle.html
+  implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.99')
+  implementation 'com.amazonaws:aws-java-sdk-s3'
+  // Used for logging
+  // implementation 'log4j:log4j:1.2.17'
+  implementation 'org.apache.logging.log4j:log4j-api:2.13.3'
+  implementation 'org.apache.logging.log4j:log4j-core:2.13.3'
+}
