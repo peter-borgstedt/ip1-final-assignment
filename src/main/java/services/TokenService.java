@@ -93,12 +93,12 @@ public class TokenService {
    */
   public <T extends Map<String, Object>> String create(String subject, String issuer, T data)
   throws NoSuchAlgorithmException {
-    // A signed token only live as long as its expiration time and the rotation time
-    var rotationTime = Long.parseLong(System.getProperty("JWT_ROTATION_TIME"));
-    log.debug(String.format("Use rotation time in minutes: %s", rotationTime));
+    // A signed token only live as long as its expiration time
+    var jwtExpirationTime = Long.parseLong(System.getProperty("JWT_EXPIRATION_TIME"));
+    log.debug(String.format("Use expiration time in minutes: %s", jwtExpirationTime));
 
-    var expirationTime = LocalDateTime.now().plusMinutes(rotationTime); // Rotate each 24 hours
-    log.debug(String.format("Set expiration time to: %s", rotationTime));
+    var expirationTime = LocalDateTime.now().plusMinutes(jwtExpirationTime); // TTL 24 hours
+    log.debug(String.format("Set expiration time to: %s", expirationTime));
 
     return Jwts.builder()
       .setClaims(Jwts.claims(data))

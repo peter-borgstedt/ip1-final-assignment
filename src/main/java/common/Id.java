@@ -21,6 +21,11 @@ import java.util.stream.Collectors;
 public class Id {
   private static final char[] CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 
+  /** Private constructor */
+  private Id() {
+    throw new InstantiationError("Forbidden instantiation");
+  }
+
   /**
    * Converts the of 10 to the base of 36 (CHARACTER.length).
    * @param number The number to be converted

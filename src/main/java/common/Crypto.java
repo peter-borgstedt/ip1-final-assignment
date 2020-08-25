@@ -27,54 +27,75 @@ import javax.crypto.spec.SecretKeySpec;
  * @author <a href="mailto:pebo6883@student.su.se">Peter Borgstedt</a>
  */
 public class Crypto {
-  private static final int GCM_IV_LENGTH = 12;
-  private static final int GCM_TAG_LENGTH = 16;
-  private static SecureRandom secureRandom = new SecureRandom();
+  private static final String DIGEST_ALG = "SHA-256";
+  private static final String KEY_SPEC_ALG = "AES";
+  private static final String CIPHER_TRANSFORMATION = "AES/GCM/NoPadding";
+  private static final int GCM_IV_LEN = 12;
+  private static final int GCM_TAG_LEN = 16;
 
+  /** Private constructor */
   private Crypto() {
     throw new InstantiationError("Forbidden instantiation");
   }
 
+  /**
+   * Create a crypto key.
+   * @param secret Key secret
+   * @return crypto key
+   */
   private static SecretKeySpec getSecretKey(String secret)
   throws GeneralSecurityException {
-    MessageDigest sha = MessageDigest.getInstance("SHA-256");
+    var sha = MessageDigest.getInstance(DIGEST_ALG);
     var bytes = secret.getBytes(StandardCharsets.UTF_8);
     var digest = sha.digest(bytes);
     var key = Arrays.copyOf(digest, 16);
-    return new SecretKeySpec(key, "AES");
+    return new SecretKeySpec(key, KEY_SPEC_ALG);
   }
 
-
+  /**
+   * Encrypt a string.
+   * @param secret Key secret
+   * @param str A string to be encrypted
+   * @return encrypted string
+   */
   public static String encrypt(String secret, String str)
   throws GeneralSecurityException {
-    byte[] iv = new byte[GCM_IV_LENGTH];
-    (new SecureRandom()).nextBytes(iv);
+    var iv = new byte[GCM_IV_LEN];
 
-    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-    GCMParameterSpec ivSpec = new GCMParameterSpec(GCM_TAG_LENGTH * Byte.SIZE, iv);
+    var random = new SecureRandom();
+    random.nextBytes(iv);
+
+    var cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
+    var spec = new GCMParameterSpec(GCM_TAG_LEN * Byte.SIZE, iv);
     var key = getSecretKey(secret);
-    cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
+    cipher.init(Cipher.ENCRYPT_MODE, key, spec);
 
-    byte[] cipherText = cipher.doFinal(str.getBytes(StandardCharsets.UTF_8));
-    byte[] encrypted = new byte[iv.length + cipherText.length];
+    var cipherText = cipher.doFinal(str.getBytes(StandardCharsets.UTF_8));
+    var encrypted = new byte[iv.length + cipherText.length];
     System.arraycopy(iv, 0, encrypted, 0, iv.length);
     System.arraycopy(cipherText, 0, encrypted, iv.length, cipherText.length);
 
     return Base64.getEncoder().encodeToString(encrypted);
   }
 
+  /**
+   * Decrypt an encrypted string.
+   * @param secret Key secret
+   * @param str Encrypted string
+   * @return decrypted string
+   */
   public static String decrypt(String secret, String str)
   throws GeneralSecurityException {
-    byte[] decoded = Base64.getDecoder().decode(str);
+    var decoded = Base64.getDecoder().decode(str);
 
-    byte[] iv = Arrays.copyOfRange(decoded, 0, GCM_IV_LENGTH);
+    var iv = Arrays.copyOfRange(decoded, 0, GCM_IV_LEN);
 
-    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-    GCMParameterSpec ivSpec = new GCMParameterSpec(GCM_TAG_LENGTH * Byte.SIZE, iv);
+    var cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
+    var spec = new GCMParameterSpec(GCM_TAG_LEN * Byte.SIZE, iv);
     var key = getSecretKey(secret);
-    cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
+    cipher.init(Cipher.DECRYPT_MODE, key, spec);
 
-    byte[] cipherText = cipher.doFinal(decoded, GCM_IV_LENGTH, decoded.length - GCM_IV_LENGTH);
+    var cipherText = cipher.doFinal(decoded, GCM_IV_LEN, decoded.length - GCM_IV_LEN);
 
     return new String(cipherText, StandardCharsets.UTF_8);
   }

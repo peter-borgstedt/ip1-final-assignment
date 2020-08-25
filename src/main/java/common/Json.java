@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  * @author <a href="mailto:pebo6883@student.su.se">Peter Borgstedt</a>
  */
 public class Json {
+  /** Private constructor */
   private Json() {
     throw new InstantiationError("Forbidden instantiation");
   }

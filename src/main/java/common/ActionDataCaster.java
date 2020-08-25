@@ -16,6 +16,7 @@ import datastructures.MessageAction;
  * @author <a href="mailto:pebo6883@student.su.se">Peter Borgstedt</a>
  */
 public class ActionDataCaster {
+  /** Private constructor */
   private ActionDataCaster() {
     throw new InstantiationError("Forbidden instantiation");
   }
