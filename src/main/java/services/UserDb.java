@@ -1,6 +1,5 @@
 package services;
 
-import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class UserDb {
   }
 
   public static String createUser(UserRegistration registration)
-  throws ReflectiveOperationException, SQLException, ConstraintException, UnsupportedEncodingException, GeneralSecurityException {
+  throws ReflectiveOperationException, SQLException, ConstraintException, GeneralSecurityException {
     var query =
       "insert into users (id, email, password, forename, surname) " + 
       "values (?, ?, ?, ?, ?)";
@@ -48,9 +47,14 @@ public class UserDb {
   }
 
   public static void updateUser(String id, Map<String, Object> changeSet)
-  throws SQLException, ReflectiveOperationException {
+  throws SQLException, ReflectiveOperationException, GeneralSecurityException {
     var query = new StringBuilder("update users set ");
     var parameters = new ArrayList<Object>();
+
+    if (changeSet.containsKey("password")) {
+      var secretKeyId = System.getProperty("PASSWORD_SECRET_KEY_ID");
+      changeSet.put("password", Crypto.encrypt(secretKeyId, String.class.cast(changeSet.get("password"))));
+    }
 
     for (var change : changeSet.entrySet()) {
       query.append(String.format("%s = ?, ", change.getKey()));
@@ -66,7 +70,7 @@ public class UserDb {
   }
 
   public static UserRecord getUser(String id)
-  throws ReflectiveOperationException, SQLException, UnsupportedEncodingException, GeneralSecurityException {
+  throws ReflectiveOperationException, SQLException, GeneralSecurityException {
     var query = new StringBuilder("select * from users where id = ?").toString();
 
     var db = new Db();
